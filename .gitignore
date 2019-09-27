@@ -10,3 +10,12 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+vendor
+.idea
+.vscode
+build
+qt-demo/moc*
+qt-demo/rcc*
+qt-demo/deploy
+qt-demo/linux

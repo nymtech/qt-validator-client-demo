@@ -1,0 +1,78 @@
+# Coconut CLient configuration file.
+
+[Client]
+
+  # Identifier is the human readable identifier for the instance.
+  Identifier = "Client"
+
+  # IAAddresses are the IP address:port combinations of Issuing Authority Servers.
+  IAAddresses = [ "3.8.244.109:4000", "3.9.102.214:4000", "3.9.129.61:4000", "3.9.222.1:4000" ]
+
+  # UseGRPC specifies whether to use gRPC for sending server requests or TCP sockets.
+  UseGRPC = false
+
+  # IAgRPCAddresses are the gRPC IP address:port combinations of Issuing Authority Servers.
+  IAgRPCAddresses = [ ]
+
+  # MaxRequests defines maximum number of concurrent requests each client can make.
+  # -1 indicates no limit
+  MaxRequests = -1
+
+  # Threshold defines minimum number of signatures client needs to obtain. Default = len(IAAddresses).
+  # TODO: should it be client or debug property?
+  Threshold = 3
+
+  # MaximumAttributes specifies the maximum number of attributes the client will want to have signed.
+  MaximumAttributes = 5
+
+[Nym]
+
+  # AccountKeysFile specifies the file containing keys used for the accounts on the Nym Blockchain.
+  AccountKeysFile = "clientKey.key"
+
+  # BlockchainNodeAddresses specifies addresses of a blockchain nodes
+	# to which the client should send all relevant requests.
+	# Note that only a single request will ever be sent, but multiple addresses are provided in case
+	# the particular node was unavailable.
+	BlockchainNodeAddresses = [ "3.8.244.109:26657", "3.9.102.214:26657", "3.9.129.61:26657", "3.9.222.1:26657" ]
+
+	# EthereumNodeAddresses specifies addresses of Ethereum nodes
+	# to which the client should send all relevant requests.
+	# Note that only a single request will ever be sent, but multiple addresses are provided in case
+	# the particular node was unavailable. (TODO: implement this functionality)
+	EthereumNodeAddresses = [ "https://ropsten.infura.io/v3/131453a5470641cd9f64942eecd8add2" ]
+ 
+ 	# NymContract defined address of the ERC20 token Nym contract. It is expected to be provided in hex format.
+  NymContract = "0xE80025228D5448A55B995c829B89567ECE5203d3"
+
+	# PipeAccount defines address of Ethereum account that pipes Nym ERC20 into Nym Tendermint coins.
+	# It is expected to be provided in hex format.
+	PipeAccount = "0xb749305b3293477b4d6b498b22db5353c9acb3f1"
+
+  # FaucetAddress defines address of ERC20 Nym Faucet.
+  FaucetAddress = "3.8.244.109:9000"
+
+  # ServiceProviders defines addresses of dummy Nym Service Providers. Added for the sake of demo.
+	# It is a temporary parameter.
+  [Nym.ServiceProviders]
+    "3.9.102.214:6000" = "0x5F828924E58f98f3dA07596F392fCB094aC818ad"
+    "3.9.129.61:6000" = "0xEe45d746721633f37142EDa6bd99F115aEb2Ff2D"
+  
+[Logging]
+
+  # Disable disables logging entirely.
+  Disable = false
+
+  # File specifies the log file, if omitted stdout will be used.
+  # File = "/var/log/coconutIA.log"
+
+  # Level specifies the log level out of `CRITICAL`, `ERROR`, `WARNING`,
+  # `NOTICE`, `INFO` and `DEBUG`.
+  #
+  # Warning: The `DEBUG` log level is unsafe for production use.
+  Level = "INFO"
+
+
+[Debug]
+
+  # RegenerateKeys = true
