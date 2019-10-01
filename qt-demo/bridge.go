@@ -73,6 +73,7 @@ type QmlBridge struct {
 	_ func(identifier, address string)                                                              `signal:"newTendermintValidator"`
 	_ func(amount string)                                                                           `signal:"updateERC20NymBalance"`
 	_ func(amount string)                                                                           `signal:"updateERC20NymBalancePending"`
+	_ func() `signal:"ResetWaitingForEthereumLabel"`
 	_ func(amount string)                                                                           `signal:"updateNymTokenBalance"`
 	_ func(strigifiedSecret string)                                                                 `signal:"updateSecret"`
 	_ func(values []string)                                                                         `signal:"populateValueComboBox"`
@@ -322,6 +323,7 @@ func (qb *QmlBridge) sendToPipeAccount(amount string, busyIndicator *core.QObjec
 		}
 
 		qb.UpdateNymTokenBalance(strconv.FormatUint(currentNymBalance+uint64(amountInt64), 10))
+		qb.ResetWaitingForEthereumLabel()
 	}()
 }
 
@@ -368,6 +370,7 @@ func (qb *QmlBridge) redeemTokens(amount string, busyIndicator *core.QObject, ma
 
 		qb.UpdateNymTokenBalance(strconv.FormatUint(currentNymBalance-uint64(amountInt64), 10))
 		qb.waitForERC20BalanceChange(ctx, currentERC20Balance+uint64(amountInt64))
+		qb.ResetWaitingForEthereumLabel()
 	}()
 }
 
@@ -559,6 +562,7 @@ func (qb *QmlBridge) getFaucetNym(busyIndicator *core.QObject, mainLayoutObject 
 		} else {
 			qb.DisplayNotificationf(warnNotificationTitle, "unknown error when trying to receive funds from the faucet")
 		}
+		qb.ResetWaitingForEthereumLabel()
 	}(nyms)
 }
 

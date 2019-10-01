@@ -52,7 +52,7 @@ ColumnLayout {
                 property bool accountExists: false
                 font.weight: Font.Black
                 text: accountExists ? qsTr("EXISTS") : qsTr("DOES NOT EXIST")
-                color: accountExists ? "limegreen" : "orangered"               
+                color: accountExists ? "limegreen" : "orangered"
             }
 
             Button {
@@ -74,7 +74,11 @@ ColumnLayout {
                 id: faucetButton
                 enabled: (parseInt(erc20BalanceField.text, 10) >= 0 && parseInt(erc20BalanceField.text, 10) <= 5 && accountStatusLabel.accountExists) ? true : false
                 text: qsTr("Request 50 ERC20 Nym from faucet")
-                onClicked: QmlBridge.getFaucetNym(faucetIndicator, mainColumn)
+                onClicked: {
+                    waitingForEthereumLabel.opacity = 1
+                    QmlBridge.getFaucetNym(faucetIndicator, mainColumn)
+                }
+
             }
 
             BusyIndicator {
@@ -187,7 +191,7 @@ ColumnLayout {
         columnSpacing: 10
         rowSpacing: 20
         rows: 4
-        columns: 4
+        columns: 5
         Layout.fillHeight: true
         Layout.fillWidth: true
 
@@ -209,6 +213,7 @@ ColumnLayout {
         Button {
             text: "Confirm"
             onClicked: {
+                waitingForEthereumLabel.opacity = 1
                 QmlBridge.sendToPipeAccount(sendToPipeAccountAmount.text, sendToPipeAccountIndicator, mainColumn)
             }
         }
@@ -219,6 +224,16 @@ ColumnLayout {
             width: 60
             Layout.preferredHeight: 50
             Layout.preferredWidth: 50
+        }
+
+        Label {
+            opacity: 0
+            Layout.preferredWidth: 150
+            id: waitingForEthereumLabel
+            property bool isWaiting: false
+            font.weight: Font.Black
+            text: qsTr("Waiting for Ethereum... [Ropsten network]")
+            color: "orangered"
         }
 
 
@@ -354,9 +369,9 @@ ColumnLayout {
                     anchors.fill: parent
                     clip: true
                     keyNavigationWraps: true
-                    
+
                     model: credentialListModel
-                    
+
                     highlight: highlight
                     highlightFollowsCurrentItem: false
                     focus: true
@@ -390,7 +405,7 @@ ColumnLayout {
                                 text: isSpent ? qsTr("SPENT") : qsTr("NOT SPENT")
                                 color: isSpent ? "orangered" : "limegreen"
                             }
-                            
+
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -447,7 +462,7 @@ ColumnLayout {
          ToolSeparator {
             opacity: 0
         }
-        
+
         Label {
             id: label1
             text: qsTr("sequence:")
@@ -520,6 +535,10 @@ ColumnLayout {
             erc20BalanceField.text = amount
         }
 
+        onResetWaitingForEthereumLabel: {
+            waitingForEthereumLabel.opacity = 0
+        }
+
         onUpdateERC20NymBalancePending: {
             erc20BalancePendingField.text = amount
         }
@@ -540,7 +559,7 @@ ColumnLayout {
         onPopulateSPComboBox: {
             spComboBox.model = sps
         }
-        
+
         onAddCredentialListItem: {
             credentialListModel.addItem(item)
         }
@@ -558,7 +577,7 @@ ColumnLayout {
         if (visible) {
             // basically update balance when component is being displayed
             QmlBridge.forceUpdateBalances(balanceUpdateIndicator, mainColumn)
-        } 
+        }
     }
 }
 
