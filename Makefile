@@ -1,5 +1,5 @@
 build_gui:
-# qtdeploy build desktop qt-demo
+	qtdeploy build desktop qt-demo
 
 build_release_gui:
 	make build_gui
