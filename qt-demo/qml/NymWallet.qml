@@ -122,7 +122,7 @@ Flickable {
 
     QtLabs.FileDialog {
         id: fileDialog
-        folder: QtLabs.StandardPaths.standardLocations(QtLabs.StandardPaths.HomeLocation)[0]
+//        folder: QtLabs.StandardPaths.standardLocations(QtLabs.StandardPaths.HomeLocation)[0] // uncomment to make default path point to user's home directorys
         nameFilters: [ "Config files (*.toml)", "All files (*)" ]
         // onFolderChanged: {
         //     folderModel.folder = folder;
