@@ -73,7 +73,7 @@ type QmlBridge struct {
 	_ func(identifier, address string)                                                              `signal:"newTendermintValidator"`
 	_ func(amount string)                                                                           `signal:"updateERC20NymBalance"`
 	_ func(amount string)                                                                           `signal:"updateERC20NymBalancePending"`
-	_ func() `signal:"ResetWaitingForEthereumLabel"`
+	_ func()                                                                                        `signal:"ResetWaitingForEthereumLabel"`
 	_ func(amount string)                                                                           `signal:"updateNymTokenBalance"`
 	_ func(strigifiedSecret string)                                                                 `signal:"updateSecret"`
 	_ func(values []string)                                                                         `signal:"populateValueComboBox"`
@@ -180,7 +180,9 @@ func (qb *QmlBridge) updateBalances() {
 	}
 	nymBalance, err := qb.clientInstance.GetCurrentNymBalance()
 	if err != nil {
-		qb.DisplayNotificationf(errNotificationTitle, "failed to query for Nym Token Balance: %v", err)
+		qb.DisplayNotificationf(warnNotificationTitle, "failed to query for Nym Token Balance: %v\n\nIf your account does not exist, please make sure you did register it (by clicking 'REGISTER ACCOUNT' button",
+			err,
+		)
 	}
 
 	qb.UpdateERC20NymBalance(strconv.FormatUint(erc20balance, 10))
@@ -261,7 +263,7 @@ func (qb *QmlBridge) confirmConfig() {
 	// gui only cares about physical addresses (for now)
 	spAddresses := make([]string, len(qb.cfg.Nym.ServiceProviders))
 	i := 0
-	for sp, _ := range qb.cfg.Nym.ServiceProviders {
+	for sp := range qb.cfg.Nym.ServiceProviders {
 		spAddresses[i] = sp
 		i++
 	}
