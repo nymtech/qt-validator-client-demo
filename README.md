@@ -1,6 +1,8 @@
 # qt-validator-client-demo
 A primitive qt client that can exercise the Nym validators
 
+**DEPRECATED: this code works with the old Go-based Nym validators. We are currently re-writing the validators in Rust. We leave this code up in case anyone wants to see Coconut client code in Go.**
+
 ## Building
 
 Unfortunately at this point of time, building the qt demo is not as straightforward we would want it to be. It will be improved in the future. The current procedure is as follows:
